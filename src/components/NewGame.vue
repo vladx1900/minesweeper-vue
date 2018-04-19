@@ -48,7 +48,7 @@
             </div>
 
             <div class="col-xs-12 text-center start-area">
-                <button class="btn btn-primary">START</button>
+                <button class="btn btn-primary" @click="startGame">START</button>
             </div>
 
         </form>
@@ -59,14 +59,90 @@
 <script>
 
     export default {
-        data: function () {
-            return {
-                gameLevel: '',
-                gameWidth: '',
-                gameHeight: '',
-                numberOfBombs: ''
+        props: ['gameLevel', 'gameWidth', 'gameHeight', 'numberOfBombs', 'gameRunning'],
+        methods: {
+            widthChanged: function () {
+                switch (this.gameLevel) {
+                    case 'beginner':
+                        this.gameWidth = 9;
+                        break;
+                    case 'intermediate':
+                        this.gameWidth = 16;
+                        break;
+                    case 'expert':
+                        this.gameWidth = 16;
+                        break;
+                }
+                this.$emit('widthWasCahnged', this.gameWidth);
+            },
+
+            heightChanged: function () {
+                switch (this.gameLevel) {
+                    case 'beginner':
+                        this.gameHeight = 9;
+                        break;
+                    case 'intermediate':
+                        this.gameHeight = 16;
+                        break;
+                    case 'expert':
+                        this.gameHeight = 30;
+                        break;
+                }
+                this.$emit('heightWasChanged', this.gameHeight);
+            },
+
+            nrOfBombsChanged: function () {
+                switch (this.gameLevel) {
+                    case 'beginner':
+                        this.numberOfBombs = 10;
+                        break;
+                    case 'intermediate':
+                        this.numberOfBombs = 40;
+                        break;
+                    case 'expert':
+                        this.numberOfBombs = 99;
+                        break;
+                }
+                this.$emit('numberOfBombsWasChanged', this.numberOfBombs);
+            },
+            startGame: function () {
+                this.gameRunning = true;
+                this.$emit('gameRunningChanged', this.gameRunning);
+            }
+        },
+        watch: {
+            gameLevel: function () {
+                this.$emit('levelWasChanged', this.gameLevel);
+
+                this.widthChanged();
+                if (this.gameLevel === 'custom') {
+                    this.gameWidth = '';
+                    this.$emit('widthWasCahnged', this.gameWidth);
+                }
+
+                this.heightChanged();
+                if (this.gameLevel === 'custom') {
+                    this.gameHeight = '';
+                    this.$emit('heightWasChanged', this.gameHeight);
+                }
+
+                this.nrOfBombsChanged();
+                if (this.gameLevel === 'custom') {
+                    this.numberOfBombs = '';
+                    this.$emit('numberOfBombsWasChanged', this.numberOfBombs);
+                }
+            },
+            gameWidth: function () {
+                this.widthChanged();
+            },
+            gameHeight: function () {
+                this.heightChanged();
+            },
+            numberOfBombs: function () {
+                this.nrOfBombsChanged();
             }
         }
+
     }
 </script>
 
