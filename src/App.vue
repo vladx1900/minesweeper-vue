@@ -15,11 +15,6 @@
             @gameRunningChanged="gameRunning = $event"
         ></app-new-game>
 
-        {{gameLevel}}
-        {{gameWidth}}
-        {{gameHeight}}
-        {{numberOfBombs}}
-        {{gameRunning}}
     </div>
 </template>
 
@@ -30,11 +25,11 @@
         name: 'App',
         data: function () {
             return {
-                gameLevel: 'as',
+                gameLevel: '',
                 gameWidth: '',
                 gameHeight: '',
                 numberOfBombs: '',
-                gameRunning: false
+                gameRunning: false,
             }
         },
         components: {
