@@ -15,11 +15,19 @@
             @gameRunningChanged="gameRunning = $event"
         ></app-new-game>
 
+        <app-game-board
+            v-if="gameRunning"
+            :gameWidth="gameWidth"
+            :gameHeight="gameHeight"
+            :numberOfBombs="numberOfBombs"
+        ></app-game-board>
+
     </div>
 </template>
 
 <script>
     import NewGame from './components/NewGame.vue';
+    import GameBoard from './components/GameBoard.vue';
 
     export default {
         name: 'App',
@@ -33,7 +41,8 @@
             }
         },
         components: {
-           appNewGame: NewGame
+           appNewGame: NewGame,
+           appGameBoard: GameBoard
         }
     }
 </script>
