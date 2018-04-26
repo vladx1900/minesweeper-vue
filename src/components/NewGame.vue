@@ -94,7 +94,7 @@
                         this.gameWidth = 16;
                         break;
                     case 'expert':
-                        this.gameWidth = 16;
+                        this.gameWidth = 30;
                         break;
                 }
                 this.$emit('widthWasCahnged', this.gameWidth);
@@ -109,7 +109,7 @@
                         this.gameHeight = 16;
                         break;
                     case 'expert':
-                        this.gameHeight = 30;
+                        this.gameHeight = 16;
                         break;
                 }
                 this.$emit('heightWasChanged', this.gameHeight);
