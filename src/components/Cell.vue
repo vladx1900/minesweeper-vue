@@ -1,7 +1,7 @@
 <template>
     <div oncontextmenu="return false;">
         <div class="game-cell" v-if="interface[iKey][jKey] === 2">
-            <div class="game-bomb" v-if="value === 'bomb' && interface[iKey][jKey]">
+            <div class="game-bomb" v-if="value === 'bomb'">
                 <img src="../assets/bomb.jpg">
             </div>
             <div class="text-style text-center" v-if="value !== 'bomb' && value !== 0">
@@ -27,18 +27,14 @@
 <script>
 
     export default {
-        props: ['value', 'iKey', 'jKey', 'gameHeight', 'gameWidth'],
-        data: function () {
-            return {
-                interface: []
-            }
-        },
+        props: ['value', 'iKey', 'jKey', 'gameHeight', 'gameWidth', 'interface'],
         methods: {
             onLeftClick: function (i, j) {
                 let mirror = this.interface.slice(0);
                 console.log(mirror);
                 mirror[i][j] = 2;
                 this.interface = mirror;
+                this.$emit('interfaceChanged', this.interface);
 
                 this.checkForWin();
                 console.log(this.interface);
@@ -47,6 +43,7 @@
                 let mirror = this.interface.slice(0);
                 mirror[i][j] = 1;
                 this.interface = mirror;
+                this.$emit('interfaceChanged', this.interface);
 
                 this.checkForWin();
                 console.log(this.interface);
@@ -55,6 +52,7 @@
                 let mirror = this.interface.slice(0);
                 mirror[i][j] = 0;
                 this.interface = mirror;
+                this.$emit('interfaceChanged', this.interface);
             },
             checkForWin: function () {
                 let win = true;
@@ -70,20 +68,25 @@
                     }
 
                 if (win === true) {
+                    this.showAllBombs();
                     swal("Congrats! You won!");
                 }
 
                 window.int = this.interface;
                 return win;
             },
-            buildEmptyInterface: function () {
-                this.interface = [];
+            showAllBombs: function () {
                 for (let i=0;i<this.gameHeight;i++) {
-                    this.interface[i] = [];
-                    for (let j=0;j<this.gameWidth;j++) {
-                        this.interface[i][j] = 0;
+                    for (let j = 0; j < this.gameWidth; j++) {
+                        if (this.interface[i][j] === 1) {
+                            let mirror = this.interface.slice(0);
+                            mirror[i][j] = 2;
+                            this.interface = mirror;
+
+                        }
                     }
                 }
+                this.$emit('interfaceChanged', this.interface);
             },
             checkForEmptyInterface: function () {
                 let emptyCase = true;
@@ -102,10 +105,7 @@
             }
         },
         mounted: function() {
-            if (this.interface.length === 0 &&  this.checkForEmptyInterface() === true) {
-                this.buildEmptyInterface();
-            }
-            console.log('mounted');
+
         }
     }
 </script>

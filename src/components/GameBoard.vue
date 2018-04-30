@@ -10,6 +10,8 @@
                             :jKey="j"
                             :gameWidth="gameWidth"
                             :gameHeight="gameHeight"
+                            :interface="interface"
+                            @interfaceChanged="interface = $event"
                     ></app-cell>
                 </td>
             </tr>
@@ -26,7 +28,8 @@
         props: ['gameWidth', 'gameHeight', 'numberOfBombs'],
         data:function () {
             return {
-                matrix: []
+                matrix: [],
+                interface: []
             }
         },
         methods: {
@@ -112,10 +115,20 @@
                 }
 
                 this.matrix[i][j] = count;
-            }
+            },
+            buildEmptyInterface: function () {
+                this.interface = [];
+                for (let i=0;i<this.gameHeight;i++) {
+                    this.interface[i] = [];
+                    for (let j=0;j<this.gameWidth;j++) {
+                        this.interface[i][j] = 0;
+                    }
+                }
+            },
         },
         mounted: function () {
             this.buildInitialMatrix();
+            this.buildEmptyInterface();
         },
         components: {
             appCell: Cell
