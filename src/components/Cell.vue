@@ -27,9 +27,16 @@
 <script>
 
     export default {
-        props: ['value', 'iKey', 'jKey', 'gameHeight', 'gameWidth', 'interface'],
+        props: ['value', 'iKey', 'jKey', 'gameHeight', 'gameWidth', 'interface', 'loseCond'],
         methods: {
             onLeftClick: function (i, j) {
+
+                if (this.loseCond === true) {
+                    this.checkForLose();
+                    return;
+                }
+                this.checkForLose();
+
                 let mirror = this.interface.slice(0);
                 console.log(mirror);
                 mirror[i][j] = 2;
@@ -37,18 +44,30 @@
                 this.$emit('interfaceChanged', this.interface);
 
                 this.checkForWin();
-                console.log(this.interface);
             },
             onRightClick: function(i, j) {
+
+                if (this.loseCond === true) {
+                    this.checkForLose();
+                    return;
+                }
+                this.checkForLose();
+
                 let mirror = this.interface.slice(0);
                 mirror[i][j] = 1;
                 this.interface = mirror;
                 this.$emit('interfaceChanged', this.interface);
 
                 this.checkForWin();
-                console.log(this.interface);
             },
             onRightClickUndoFlag: function (i, j) {
+
+                if (this.loseCond === true) {
+                    this.checkForLose();
+                    return;
+                }
+                this.checkForLose();
+
                 let mirror = this.interface.slice(0);
                 mirror[i][j] = 0;
                 this.interface = mirror;
@@ -87,6 +106,13 @@
                     }
                 }
                 this.$emit('interfaceChanged', this.interface);
+            },
+            checkForLose: function () {
+                if (this.value === 'bomb' || this.loseCond === true) {
+                    swal('You lose! Try again.');
+                    this.loseCond = true;
+                    this.$emit('loseCondChanged', this.loseCond);
+                }
             },
             checkForEmptyInterface: function () {
                 let emptyCase = true;

@@ -12,6 +12,8 @@
                             :gameHeight="gameHeight"
                             :interface="interface"
                             @interfaceChanged="interface = $event"
+                            :loseCond="loseCond"
+                            @loseCondChanged="loseCond = $event"
                     ></app-cell>
                 </td>
             </tr>
@@ -29,7 +31,8 @@
         data:function () {
             return {
                 matrix: [],
-                interface: []
+                interface: [],
+                loseCond: false
             }
         },
         methods: {
