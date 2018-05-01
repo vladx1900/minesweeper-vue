@@ -11,15 +11,15 @@
 
         <div class="game-cell-interface"
              v-if="interface[iKey][jKey] === 0"
-             @click="onLeftClick(iKey, jKey)"
-             @contextmenu="onRightClick(iKey, jKey)"
+             @click="onLeftClick"
+             @contextmenu="onRightClick"
         ></div>
 
         <div class="game-cell-flag"
              v-if="interface[iKey][jKey] === 1"
-             @contextmenu="onRightClickUndoFlag(iKey, jKey)"
+             @contextmenu="onRightClickUndoFlag"
         >
-            <img  class="game-images" src="../assets/flag.jpg">
+            <img src="../assets/flag.jpg">
         </div>
     </div>
 </template>
@@ -29,8 +29,19 @@
     export default {
         props: ['value', 'iKey', 'jKey', 'gameHeight', 'gameWidth', 'interface', 'loseCond'],
         methods: {
-            onLeftClick: function (i, j) {
+            onLeftClick: function () {
 
+                this.onClickChangeInterface(2);
+            },
+            onRightClick: function() {
+
+                this.onClickChangeInterface(1);
+            },
+            onRightClickUndoFlag: function () {
+
+                this.onClickChangeInterface(0);
+            },
+            onClickChangeInterface: function (changeVal) {
                 if (this.loseCond === true) {
                     this.checkForLose();
                     return;
@@ -38,40 +49,11 @@
                 this.checkForLose();
 
                 let mirror = this.interface.slice(0);
-                console.log(mirror);
-                mirror[i][j] = 2;
+                mirror[this.iKey][this.jKey] = changeVal;
                 this.interface = mirror;
                 this.$emit('interfaceChanged', this.interface);
 
                 this.checkForWin();
-            },
-            onRightClick: function(i, j) {
-
-                if (this.loseCond === true) {
-                    this.checkForLose();
-                    return;
-                }
-                this.checkForLose();
-
-                let mirror = this.interface.slice(0);
-                mirror[i][j] = 1;
-                this.interface = mirror;
-                this.$emit('interfaceChanged', this.interface);
-
-                this.checkForWin();
-            },
-            onRightClickUndoFlag: function (i, j) {
-
-                if (this.loseCond === true) {
-                    this.checkForLose();
-                    return;
-                }
-                this.checkForLose();
-
-                let mirror = this.interface.slice(0);
-                mirror[i][j] = 0;
-                this.interface = mirror;
-                this.$emit('interfaceChanged', this.interface);
             },
             checkForWin: function () {
                 let win = true;
@@ -113,21 +95,6 @@
                     this.loseCond = true;
                     this.$emit('loseCondChanged', this.loseCond);
                 }
-            },
-            checkForEmptyInterface: function () {
-                let emptyCase = true;
-
-                dance:
-                    for (let i=0;i<this.gameHeight;i++) {
-                        for (let j=0;j<this.gameWidth;j++) {
-                            if (this.interface[i][j] !== 0) {
-                                emptyCase  = false;
-                                break dance;
-                            }
-                        }
-                    }
-
-                return emptyCase ;
             }
         },
         mounted: function() {
