@@ -72,12 +72,11 @@
             },
             checkForWin: function () {
                 let win = true;
-                console.log('int:' + this.interface);
+
                 dance:
                     for (let i=0;i<this.gameHeight;i++) {
                         for (let j=0;j<this.gameWidth;j++) {
                             if (this.interface[i][j] === 0) {
-                                console.log('contors:' + i, j);
                                 win = false;
                                 break dance;
                             }
@@ -113,7 +112,7 @@
                 }
             },
             onEmptyValue: function (x, y) {
-                console.log(x,y);
+
                 let allCasesAround = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
                 let newX = 0;
                 let newY = 0;
