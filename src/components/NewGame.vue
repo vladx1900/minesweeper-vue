@@ -143,10 +143,13 @@
                     return false;
                 }
 
-                if (this.gameHeight && this.gameWidth && this.numberOfBombs) return true;
+                if (this.gameHeight && this.gameWidth && this.numberOfBombs && this.gameHeight <= 30 && this.gameWidth <= 30 && this.numberOfBombs <= 130 ) return true;
                 if (!this.gameHeight) this.errors.push("Height required.");
                 if (!this.gameWidth) this.errors.push("Width required.");
                 if (!this.numberOfBombs) this.errors.push("Number of bombs required.");
+                if (this.gameHeight > 30) this.errors.push("Max height is 30.");
+                if (this.gameWidth > 30) this.errors.push("Max width is 30.");
+                if (this.numberOfBombs > 130) this.errors.push("Max number of bombs is 130.");
                 e.preventDefault();
             },
             removeErrors: function () {
