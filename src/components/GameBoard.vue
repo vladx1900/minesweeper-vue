@@ -14,6 +14,7 @@
                             @interfaceChanged="interface = $event"
                             :loseCond="loseCond"
                             @loseCondChanged="loseCond = $event"
+                            :matrix="matrix"
                     ></app-cell>
                 </td>
             </tr>

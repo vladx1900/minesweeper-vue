@@ -27,11 +27,15 @@
 <script>
 
     export default {
-        props: ['value', 'iKey', 'jKey', 'gameHeight', 'gameWidth', 'interface', 'loseCond'],
+        props: ['value', 'iKey', 'jKey', 'gameHeight', 'gameWidth', 'interface', 'loseCond', 'matrix'],
         methods: {
             onLeftClick: function () {
 
-                this.onClickChangeInterface(2);
+                if (this.value === 0) {
+                    this.onEmptyValue(this.iKey, this.jKey);
+                } else {
+                    this.onClickChangeInterface(2);
+                }
             },
             onRightClick: function() {
 
@@ -57,11 +61,12 @@
             },
             checkForWin: function () {
                 let win = true;
-
+                console.log('int:' + this.interface);
                 dance:
                     for (let i=0;i<this.gameHeight;i++) {
                         for (let j=0;j<this.gameWidth;j++) {
                             if (this.interface[i][j] === 0) {
+                                console.log('contors:' + i, j);
                                 win = false;
                                 break dance;
                             }
@@ -90,11 +95,45 @@
                 this.$emit('interfaceChanged', this.interface);
             },
             checkForLose: function () {
-                if (this.value === 'bomb' || this.loseCond === true) {
+                if (this.value === 'bomb' && this.loseCond === true) {
                     swal('You lose! Try again.');
                     this.loseCond = true;
                     this.$emit('loseCondChanged', this.loseCond);
                 }
+            },
+            onEmptyValue: function (x, y) {
+                console.log(x,y);
+                let allCasesAround = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+                let newX = 0;
+                let newY = 0;
+
+                let mirror = this.interface.slice(0);
+                mirror[x][y] = 2;
+                this.interface = mirror;
+                this.$emit('interfaceChanged', this.interface);
+
+                allCasesAround.forEach((val) => {
+
+                    newX = 0; newY = 0;
+                    newX = parseInt(x) + parseInt(val[0]);
+                    newY = parseInt(y) + parseInt(val[1]);
+
+                    if (newX >=0 && newX < this.gameHeight && newY >= 0 && newY < this.gameWidth) {
+                        if (this.matrix[newX][newY] === 0 && this.interface[newX][newY] === 0) {
+                            this.onEmptyValue(newX, newY);
+                        }
+
+                        if (this.matrix[newX][newY] !== 0 && this.interface[newX][newY] === 0){
+                            let mirror = this.interface.slice(0);
+                            mirror[newX][newY] = 2;
+                            this.interface = mirror;
+                            this.$emit('interfaceChanged', this.interface);
+                        }
+                    }
+
+                });
+
+
             }
         },
         mounted: function() {
