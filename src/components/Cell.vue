@@ -35,7 +35,7 @@
                     this.onEmptyValue(this.iKey, this.jKey);
                 } else {
                     if (this.loseCond === true) {
-                        this.checkForLose();
+                        swal('Exit or start a NEW GAME!');
                         return;
                     }
                     this.checkForLose();
@@ -45,9 +45,19 @@
             },
             onRightClick: function() {
 
+                if (this.loseCond === true) {
+                    swal('Exit or start a NEW GAME!');
+                    return;
+                }
+
                 this.onClickChangeInterface(1);
             },
             onRightClickUndoFlag: function () {
+
+                if (this.loseCond === true) {
+                    swal('Exit or start a NEW GAME!');
+                    return;
+                }
 
                 this.onClickChangeInterface(0);
             },
