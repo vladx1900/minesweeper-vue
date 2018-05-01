@@ -34,6 +34,12 @@
                 if (this.value === 0) {
                     this.onEmptyValue(this.iKey, this.jKey);
                 } else {
+                    if (this.loseCond === true) {
+                        this.checkForLose();
+                        return;
+                    }
+                    this.checkForLose();
+
                     this.onClickChangeInterface(2);
                 }
             },
@@ -46,11 +52,6 @@
                 this.onClickChangeInterface(0);
             },
             onClickChangeInterface: function (changeVal) {
-                if (this.loseCond === true) {
-                    this.checkForLose();
-                    return;
-                }
-                this.checkForLose();
 
                 let mirror = this.interface.slice(0);
                 mirror[this.iKey][this.jKey] = changeVal;
@@ -95,7 +96,7 @@
                 this.$emit('interfaceChanged', this.interface);
             },
             checkForLose: function () {
-                if (this.value === 'bomb' && this.loseCond === true) {
+                if (this.value === 'bomb') {
                     swal('You lose! Try again.');
                     this.loseCond = true;
                     this.$emit('loseCondChanged', this.loseCond);
